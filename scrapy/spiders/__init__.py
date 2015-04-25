@@ -5,6 +5,7 @@ See documentation in docs/topics/spiders.rst
 """
 import logging
 import warnings
+import inspect
 
 from scrapy import signals
 from scrapy.http import Request
@@ -97,10 +98,15 @@ class Spider(object_ref):
         if callable(idled):
             # handle requests returned by idled
             try:
-                for request in idled() :
+                requests = idled()
+                # return if idled() returns nothing
+                if not inspect.isgenerator(requests):
+                    return
+                for request in requests:
                     self.crawler.engine.crawl(request, spider=self)
             except CloseSpider, e:
                 self.close(self, e.reason)
+
             raise DontCloseSpider
 
     def __str__(self):
