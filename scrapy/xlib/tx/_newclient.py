@@ -47,15 +47,15 @@ from twisted.web.http import _IdentityTransferDecoder, _ChunkedTransferDecoder
 
 from twisted.web._newclient import (
     BadHeaders, ExcessWrite, ParseError, BadResponseVersion, _WrapperException,
-    RequestGenerationFailed, RequestTransmissionFailed,
+    RequestGenerationFailed, RequestTransmissionFailed, ConnectionAborted,
     WrongBodyLength, ResponseDone, RequestNotSent,
-    LengthEnforcingConsumer, makeStatefulDispatcher, ChunkedEncoder,
+    LengthEnforcingConsumer, makeStatefulDispatcher, Response, ChunkedEncoder,
     TransportProxyProducer,
 )
-# newer than 10.0.0
+# newer than 10.1.0
 #from twisted.web._newclient import (
-#    ConnectionAborted, ResponseFailed, ResponseNeverReceived, HTTPParser,
-#    HTTPClientParser, Request, Response, HTTP11ClientProtocol,
+#    ResponseFailed, ResponseNeverReceived, HTTPParser, HTTPClientParser,
+#    Request, HTTP11ClientProtocol,
 #)
 from .iweb import IResponse
 
@@ -130,7 +130,7 @@ class RequestTransmissionFailed(_WrapperException):
     @ivar reasons: A C{list} of one or more L{Failure} instances giving the
         reasons the request transmission was considered to have failed.
     """
-}}} '''
+
 
 
 class ConnectionAborted(Exception):
@@ -139,7 +139,7 @@ class ConnectionAborted(Exception):
     """
 
 
-''' {{{
+
 class WrongBodyLength(Exception):
     """
     An L{IBodyProducer} declared the number of bytes it was going to

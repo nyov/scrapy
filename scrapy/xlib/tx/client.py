@@ -38,7 +38,7 @@ from twisted.web.http_headers import Headers
 from twisted.web.client import (
     PartialDownloadError,
 )
-# newer than 10.0.0
+# newer than 10.1.0
 #from twisted.web.client import (
 #    CookieAgent, GzipDecoder, ContentDecoderAgent, RedirectAgent, FileBodyProducer,
 #    HTTPConnectionPool, Agent, ProxyAgent,
@@ -145,7 +145,8 @@ def _makeGetterFactory(url, factoryFactory, contextFactory=None,
 # feature equivalent.
 
 from twisted.web.error import SchemeNotSupported
-from ._newclient import Request, Response, HTTP11ClientProtocol
+from twisted.web._newclient import Response
+from ._newclient import Request, HTTP11ClientProtocol
 from twisted.web._newclient import ResponseDone
 from ._newclient import ResponseFailed
 from twisted.web._newclient import RequestNotSent, RequestTransmissionFailed

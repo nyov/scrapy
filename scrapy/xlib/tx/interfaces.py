@@ -20,15 +20,15 @@ from twisted.internet.interfaces import (
     IWriteDescriptor, IReadWriteDescriptor, IHalfCloseableDescriptor,
     ISystemHandle, IConsumer, IProducer, IPushProducer, IPullProducer,
     IProtocol, IProcessProtocol, IHalfCloseableProtocol,
-    IProtocolFactory, ITransport, IProcessTransport, IServiceCollection,
+    IProtocolFactory, ITransport,
+    ITLSTransport, ISSLTransport, IProcessTransport, IServiceCollection,
     IUDPTransport, IUNIXDatagramTransport, IUNIXDatagramConnectedTransport,
-    IMulticastTransport,
+    IMulticastTransport, IStreamClientEndpoint, IStreamServerEndpoint,
 )
-# newer than 10.0.0
+# newer than 10.1.0
 #from twisted.internet.interfaces import (
 #    IResolver, IReactorUNIX, IReactorUNIXDatagram, IReactorWin32Events, IReactorSocket,
 #    IReactorDaemonize, IFileDescriptorReceiver, ITCPTransport, IUNIXTransport,
-#    ITLSTransport, ISSLTransport, IStreamClientEndpoint, IStreamServerEndpoint,
 #    IStreamServerEndpointStringParser, IStreamClientEndpointStringParser,
 #)
 
@@ -2091,7 +2091,7 @@ class IUNIXTransport(ITransport):
         """
 
 
-
+''' {{{
 class ITLSTransport(ITCPTransport):
     """
     A TCP transport that supports switching to TLS midstream.
@@ -2116,7 +2116,7 @@ class ISSLTransport(ITCPTransport):
         Return an object with the peer's certificate info.
         """
 
-''' {{{
+
 class IProcessTransport(ITransport):
     """
     A process transport.
@@ -2345,7 +2345,7 @@ class IMulticastTransport(Interface):
         """
         Leave multicast group, return L{Deferred} of success.
         """
-}}} '''
+
 
 class IStreamClientEndpoint(Interface):
     """
@@ -2384,7 +2384,7 @@ class IStreamServerEndpoint(Interface):
         @return: A L{Deferred} that results in an L{IListeningPort} or an
             L{CannotListenError}
         """
-
+}}} '''
 
 
 class IStreamServerEndpointStringParser(Interface):

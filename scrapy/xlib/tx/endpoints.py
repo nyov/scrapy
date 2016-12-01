@@ -34,9 +34,12 @@ from twisted.python.components import proxyForInterface
 from twisted.plugin import IPlugin, getPlugins
 #from twisted.internet import stdio
 
-# newer than 10.0.0
+from twisted.internet.endpoints import (
+    SSL4ServerEndpoint,
+)
+# newer than 10.1.0
 #from twisted.internet.endpoints import (
-#    TCP4ServerEndpoint, TCP6ServerEndpoint, TCP4ClientEndpoint, SSL4ServerEndpoint, SSL4ClientEndpoint,
+#    TCP4ServerEndpoint, TCP6ServerEndpoint, TCP4ClientEndpoint, SSL4ClientEndpoint,
 #    UNIXServerEndpoint, UNIXClientEndpoint, AdoptedStreamServerEndpoint, connectProtocol,
 #    quoteStringArgument,
 #    serverFromString, #> using newer _parseSSL, _tokenize in _serverParsers
@@ -388,7 +391,7 @@ class TCP4ClientEndpoint(object):
 
 
 
-
+''' {{{
 @implementer(interfaces.IStreamServerEndpoint)
 class SSL4ServerEndpoint(object):
     """
@@ -429,7 +432,7 @@ class SSL4ServerEndpoint(object):
                              contextFactory=self._sslContextFactory,
                              backlog=self._backlog,
                              interface=self._interface)
-
+}}} '''
 
 
 @implementer(interfaces.IStreamClientEndpoint)
