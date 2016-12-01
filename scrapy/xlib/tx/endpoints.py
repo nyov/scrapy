@@ -15,7 +15,6 @@ parsed by the L{clientFromString} and L{serverFromString} functions.
 from __future__ import division, absolute_import
 
 import os
-#import socket
 
 from zope.interface import implementer, directlyProvides
 import warnings
@@ -23,32 +22,16 @@ import warnings
 from twisted.internet import interfaces, defer, error, fdesc
 from twisted.internet.protocol import (
         ClientFactory, Protocol, Factory)
-#from twisted.internet import threads, ProcessProtocol
 from twisted.internet.interfaces import IStreamServerEndpointStringParser
 from twisted.internet.interfaces import IStreamClientEndpointStringParser
 from twisted.python.filepath import FilePath
-#from twisted.python.failure import Failure
-#from twisted.python import log
 from twisted.python.components import proxyForInterface
 
 from twisted.plugin import IPlugin, getPlugins
-#from twisted.internet import stdio
 
 from twisted.internet.endpoints import (
     SSL4ServerEndpoint,
 )
-# newer than 10.1.0
-#from twisted.internet.endpoints import (
-#    TCP4ServerEndpoint, TCP6ServerEndpoint, TCP4ClientEndpoint, SSL4ClientEndpoint,
-#    UNIXServerEndpoint, UNIXClientEndpoint, AdoptedStreamServerEndpoint, connectProtocol,
-#    quoteStringArgument,
-#    serverFromString, #> using newer _parseSSL, _tokenize in _serverParsers
-#    clientFromString, #> using newer _clientParsers
-#    _WrappingProtocol, _WrappingFactory, _TCPServerEndpoint,
-#    _parseTCP, _parseUNIX, _loadCAsFromDir,
-#    _parseSSL, _tokenize,
-#    _parseClientTCP, _parseClientSSL, _parseClientUNIX,
-#)
 
 from .interfaces import IFileDescriptorReceiver
 
@@ -389,50 +372,6 @@ class TCP4ClientEndpoint(object):
         except:
             return defer.fail()
 
-
-
-''' {{{
-@implementer(interfaces.IStreamServerEndpoint)
-class SSL4ServerEndpoint(object):
-    """
-    SSL secured TCP server endpoint with an IPv4 configuration.
-    """
-
-    def __init__(self, reactor, port, sslContextFactory,
-                 backlog=50, interface=''):
-        """
-        @param reactor: An L{IReactorSSL} provider.
-
-        @param port: The port number used for listening
-        @type port: int
-
-        @param sslContextFactory: An instance of
-            L{twisted.internet.ssl.ContextFactory}.
-
-        @param backlog: Size of the listen queue
-        @type backlog: int
-
-        @param interface: The hostname to bind to, defaults to '' (all)
-        @type interface: str
-        """
-        self._reactor = reactor
-        self._port = port
-        self._sslContextFactory = sslContextFactory
-        self._backlog = backlog
-        self._interface = interface
-
-
-    def listen(self, protocolFactory):
-        """
-        Implement L{IStreamServerEndpoint.listen} to listen for SSL on a
-        TCP socket.
-        """
-        return defer.execute(self._reactor.listenSSL, self._port,
-                             protocolFactory,
-                             contextFactory=self._sslContextFactory,
-                             backlog=self._backlog,
-                             interface=self._interface)
-}}} '''
 
 
 @implementer(interfaces.IStreamClientEndpoint)
