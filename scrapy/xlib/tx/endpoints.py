@@ -21,43 +21,41 @@ from zope.interface import implementer, directlyProvides
 import warnings
 
 from twisted.internet import interfaces, defer, error, fdesc
-from twisted.internet.protocol import (
-        ClientFactory, Protocol, Factory)
+#from twisted.internet.protocol import (
+#        ClientFactory, Protocol)
+from twisted.internet.protocol import Factory
 #from twisted.internet import threads, ProcessProtocol
 from twisted.internet.interfaces import IStreamServerEndpointStringParser
-from twisted.internet.interfaces import IStreamClientEndpointStringParser
+#from twisted.internet.interfaces import IStreamClientEndpointStringParser
 from twisted.python.filepath import FilePath
 #from twisted.python.failure import Failure
 #from twisted.python import log
-from twisted.python.components import proxyForInterface
+#from twisted.python.components import proxyForInterface
 
 from twisted.plugin import IPlugin, getPlugins
 #from twisted.internet import stdio
 
 from twisted.internet.endpoints import (
-    quoteStringArgument,
-    UNIXServerEndpoint,
-    SSL4ServerEndpoint,
+    clientFromString, quoteStringArgument,
+    TCP4ClientEndpoint,
+    UNIXServerEndpoint, UNIXClientEndpoint,
+    SSL4ServerEndpoint, SSL4ClientEndpoint,
+    AdoptedStreamServerEndpoint,
     _parseTCP, _parseUNIX, _parse,
-    _loadCAsFromDir,
 )
-# newer than 12.0.0
+# newer than 12.1.0
 #from twisted.internet.endpoints import (
-#    TCP4ServerEndpoint, TCP6ServerEndpoint, TCP4ClientEndpoint, SSL4ClientEndpoint,
-#    UNIXClientEndpoint, AdoptedStreamServerEndpoint, connectProtocol,
+#    TCP4ServerEndpoint, TCP6ServerEndpoint,
+#    connectProtocol,
 #    serverFromString, #> using newer _parseSSL in _serverParsers
-#    clientFromString, #> using newer _clientParsers
-#    _WrappingProtocol, _WrappingFactory, _TCPServerEndpoint,
-#    _parseSSL, _tokenize,
-#    _parseClientTCP, _parseClientSSL, _parseClientUNIX,
+#    _TCPServerEndpoint,
+#    _parseSSL,
 #)
-
-from .interfaces import IFileDescriptorReceiver
 
 
 __all__ = ["TCP4ClientEndpoint", "SSL4ServerEndpoint"]
 
-
+''' {{{
 class _WrappingProtocol(Protocol):
     """
     Wrap another protocol in order to notify my user when a connection has
@@ -76,7 +74,7 @@ class _WrappingProtocol(Protocol):
         self._wrappedProtocol = wrappedProtocol
 
         for iface in [interfaces.IHalfCloseableProtocol,
-                      IFileDescriptorReceiver]:
+                      interfaces.IFileDescriptorReceiver]:
             if iface.providedBy(self._wrappedProtocol):
                 directlyProvides(self, iface)
 
@@ -265,7 +263,7 @@ class _ProcessEndpointTransport(proxyForInterface(
         """
         for chunk in data:
             self._process.writeToChild(0, chunk)
-
+}}} '''
 
 @implementer(interfaces.IStreamServerEndpoint)
 class _TCPServerEndpoint(object):
@@ -346,7 +344,7 @@ class TCP6ServerEndpoint(_TCPServerEndpoint):
         _TCPServerEndpoint.__init__(self, reactor, port, backlog, interface)
 
 
-
+''' {{{
 @implementer(interfaces.IStreamClientEndpoint)
 class TCP4ClientEndpoint(object):
     """
@@ -393,7 +391,7 @@ class TCP4ClientEndpoint(object):
 
 
 
-''' {{{
+
 @implementer(interfaces.IStreamServerEndpoint)
 class SSL4ServerEndpoint(object):
     """
@@ -434,7 +432,7 @@ class SSL4ServerEndpoint(object):
                              contextFactory=self._sslContextFactory,
                              backlog=self._backlog,
                              interface=self._interface)
-}}} '''
+
 
 
 @implementer(interfaces.IStreamClientEndpoint)
@@ -488,7 +486,7 @@ class SSL4ClientEndpoint(object):
             return defer.fail()
 
 
-''' {{{
+
 @implementer(interfaces.IStreamServerEndpoint)
 class UNIXServerEndpoint(object):
     """
@@ -520,7 +518,7 @@ class UNIXServerEndpoint(object):
                              backlog=self._backlog,
                              mode=self._mode,
                              wantPID=self._wantPID)
-}}} '''
+
 
 
 @implementer(interfaces.IStreamClientEndpoint)
@@ -613,7 +611,8 @@ class AdoptedStreamServerEndpoint(object):
         return defer.succeed(port)
 
 
-''' {{{
+
+
 def _parseTCP(factory, port, interface="", backlog=50):
     """
     Internal parser function for L{_parseServer} to convert the string
@@ -727,7 +726,7 @@ def _parseSSL(factory, port, privateKey="server.pem", certKey=None,
             {'interface': interface, 'backlog': int(backlog)})
 
 
-
+''' {{{
 @implementer(IPlugin, IStreamServerEndpointStringParser)
 class _StandardIOParser(object):
     """
@@ -789,7 +788,7 @@ class _TCP6ServerParser(object):
         # Redirects to another function (self._parseServer), tricks zope.interface
         # into believing the interface is correctly implemented.
         return self._parseServer(reactor, *args, **kwargs)
-
+}}} '''
 
 
 _serverParsers = {"tcp": _parseTCP,
@@ -872,13 +871,13 @@ _endpointServerFactories = {
     'SSL': SSL4ServerEndpoint,
     'UNIX': UNIXServerEndpoint,
     }
-
+''' {{{
 _endpointClientFactories = {
     'TCP': TCP4ClientEndpoint,
     'SSL': SSL4ClientEndpoint,
     'UNIX': UNIXClientEndpoint,
     }
-
+}}} '''
 
 _NO_DEFAULT = object()
 
@@ -1040,7 +1039,7 @@ def quoteStringArgument(argument):
     @rtype: C{str}
     """
     return argument.replace('\\', '\\\\').replace(':', '\\:')
-}}} '''
+
 
 
 def _parseClientTCP(*args, **kwargs):
@@ -1076,7 +1075,7 @@ def _parseClientTCP(*args, **kwargs):
     return kwargs
 
 
-''' {{{
+
 def _loadCAsFromDir(directoryPath):
     """
     Load certificate-authority certificate objects in a given directory.
@@ -1105,7 +1104,7 @@ def _loadCAsFromDir(directoryPath):
         else:
             caCerts[theCert.digest()] = theCert.original
     return caCerts.values()
-}}} '''
+
 
 
 def _parseClientSSL(*args, **kwargs):
@@ -1264,7 +1263,7 @@ def clientFromString(reactor, description):
         raise ValueError("Unknown endpoint type: %r" % (aname,))
     kwargs = _clientParsers[name](*args, **kwargs)
     return _endpointClientFactories[name](reactor, **kwargs)
-
+}}} '''
 
 
 def connectProtocol(endpoint, protocol):

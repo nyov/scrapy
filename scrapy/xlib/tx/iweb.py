@@ -18,7 +18,7 @@ from twisted.web.iweb import (
     ICredentialFactory, IBodyProducer, IRenderable, ITemplateLoader, IResponse,
     UNKNOWN_LENGTH,
 )
-# newer than 12.0.0
+# newer than 12.1.0
 #from twisted.web.iweb import (
 #    IRequest, _IRequestEncoder, _IRequestEncoderFactory,
 #)

@@ -29,6 +29,7 @@ from twisted.python.failure import Failure
 from twisted.web import http
 from twisted.internet import defer, protocol, task, reactor
 from twisted.internet.interfaces import IProtocol
+from twisted.internet.endpoints import TCP4ClientEndpoint, SSL4ClientEndpoint
 from twisted.python import failure
 from twisted.python.components import proxyForInterface
 from twisted.web import error
@@ -39,12 +40,10 @@ from twisted.web.client import (
     PartialDownloadError, _WebToNormalContextFactory, FileBodyProducer,
     CookieAgent, GzipDecoder, ContentDecoderAgent, RedirectAgent,
 )
-# newer than 12.0.0
+# newer than 12.1.0
 #from twisted.web.client import (
 #    HTTPConnectionPool, Agent, ProxyAgent, readBody,
 #)
-
-from .endpoints import TCP4ClientEndpoint, SSL4ClientEndpoint
 
 ''' {{{
 class PartialDownloadError(error.Error):
@@ -149,9 +148,7 @@ from ._newclient import Request, HTTP11ClientProtocol
 from twisted.web._newclient import ResponseDone, ResponseFailed
 from twisted.web._newclient import RequestNotSent, RequestTransmissionFailed
 from twisted.web._newclient import (
-    PotentialDataLoss, _WrapperException)
-from ._newclient import (
-    ResponseNeverReceived)
+    ResponseNeverReceived, PotentialDataLoss, _WrapperException)
 
 try:
     from twisted.internet.ssl import ClientContextFactory

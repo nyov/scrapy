@@ -49,13 +49,13 @@ from twisted.web._newclient import (
     BadHeaders, ExcessWrite, ParseError, BadResponseVersion, _WrapperException,
     RequestGenerationFailed, RequestTransmissionFailed, ConnectionAborted,
     WrongBodyLength, ResponseDone, ResponseFailed, RequestNotSent, _callAppFunction,
-    HTTPParser,
+    ResponseNeverReceived, HTTPParser, HTTPClientParser,
     LengthEnforcingConsumer, makeStatefulDispatcher, Response, ChunkedEncoder,
     TransportProxyProducer,
 )
-# newer than 12.0.0
+# newer than 12.1.0
 #from twisted.web._newclient import (
-#    ResponseNeverReceived, HTTPClientParser, Request, HTTP11ClientProtocol
+#    Request, HTTP11ClientProtocol
 #)
 
 # States HTTPParser can be in
@@ -172,7 +172,7 @@ class ResponseFailed(_WrapperException):
     def __init__(self, reasons, response=None):
         _WrapperException.__init__(self, reasons)
         self.response = response
-}}} '''
+
 
 
 class ResponseNeverReceived(ResponseFailed):
@@ -181,7 +181,7 @@ class ResponseNeverReceived(ResponseFailed):
     """
 
 
-''' {{{
+
 class RequestNotSent(Exception):
     """
     L{RequestNotSent} indicates that an attempt was made to issue a request but
@@ -350,7 +350,7 @@ class HTTPParser(LineReceiver):
         Override this to change to the C{BODY} or C{DONE} state.
         """
         self.switchToBodyMode(None)
-}}} '''
+
 
 
 class HTTPClientParser(HTTPParser):
@@ -551,7 +551,7 @@ class HTTPClientParser(HTTPParser):
                 exceptionClass = ResponseNeverReceived
             self._responseDeferred.errback(Failure(exceptionClass([reason])))
             del self._responseDeferred
-
+}}} '''
 
 
 class Request:

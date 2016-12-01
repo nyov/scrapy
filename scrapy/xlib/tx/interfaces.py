@@ -15,21 +15,21 @@ from twisted.internet.interfaces import (
     IAddress, IConnector, IResolverSimple, IReactorTCP, IReactorSSL,
     IReactorWin32Events, IReactorUDP, IReactorMulticast, IReactorProcess,
     IReactorTime, IDelayedCall, IReactorThreads, IReactorCore,
-    IReactorPluggableResolver, IReactorFDSet,
+    IReactorPluggableResolver, IReactorDaemonize, IReactorFDSet,
     IListeningPort, ILoggingContext, IFileDescriptor, IReadDescriptor,
     IWriteDescriptor, IReadWriteDescriptor, IHalfCloseableDescriptor,
     ISystemHandle, IConsumer, IProducer, IPushProducer, IPullProducer,
     IProtocol, IProcessProtocol, IHalfCloseableProtocol,
-    IProtocolFactory, ITransport, ITCPTransport,
+    IFileDescriptorReceiver, IProtocolFactory, ITransport, ITCPTransport,
+    IUNIXTransport,
     ITLSTransport, ISSLTransport, IProcessTransport, IServiceCollection,
     IUDPTransport, IUNIXDatagramTransport, IUNIXDatagramConnectedTransport,
     IMulticastTransport, IStreamClientEndpoint, IStreamServerEndpoint,
     IStreamServerEndpointStringParser, IStreamClientEndpointStringParser,
 )
-# newer than 12.0.0
+# newer than 12.1.0
 #from twisted.internet.interfaces import (
 #    IResolver, IReactorUNIX, IReactorUNIXDatagram, IReactorSocket,
-#    IReactorDaemonize, IFileDescriptorReceiver, IUNIXTransport,
 #)
 
 ''' {{{
@@ -1368,7 +1368,7 @@ class IReactorPluggableResolver(Interface):
 
         @return: The previously installed resolver.
         """
-}}} '''
+
 
 class IReactorDaemonize(Interface):
     """
@@ -1400,7 +1400,7 @@ class IReactorDaemonize(Interface):
         """
 
 
-''' {{{
+
 class IReactorFDSet(Interface):
     """
     Implement me to be able to use L{IFileDescriptor} type resources.
@@ -1884,7 +1884,7 @@ class IHalfCloseableProtocol(Interface):
         This will never be called for TCP connections as TCP does not
         support notification of this type of half-close.
         """
-}}} '''
+
 
 
 class IFileDescriptorReceiver(Interface):
@@ -1905,7 +1905,7 @@ class IFileDescriptorReceiver(Interface):
         """
 
 
-''' {{{
+
 class IProtocolFactory(Interface):
     """
     Interface for protocol factories.
@@ -2062,7 +2062,7 @@ class ITCPTransport(ITransport):
         """
         Returns L{IPv4Address} or L{IPv6Address}.
         """
-}}} '''
+
 
 
 class IUNIXTransport(ITransport):
@@ -2091,7 +2091,7 @@ class IUNIXTransport(ITransport):
         """
 
 
-''' {{{
+
 class ITLSTransport(ITCPTransport):
     """
     A TCP transport that supports switching to TLS midstream.
