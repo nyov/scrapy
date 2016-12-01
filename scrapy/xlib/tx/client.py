@@ -39,12 +39,8 @@ from twisted.web.http_headers import Headers
 from twisted.web.client import (
     PartialDownloadError, FileBodyProducer,
     CookieAgent, GzipDecoder, ContentDecoderAgent, RedirectAgent,
-    Agent, ProxyAgent,
+    Agent, ProxyAgent, HTTPConnectionPool, readBody,
 )
-# newer than 13.0.0
-#from twisted.web.client import (
-#    HTTPConnectionPool, readBody,
-#)
 
 ''' {{{
 class PartialDownloadError(error.Error):
@@ -145,12 +141,11 @@ def _makeGetterFactory(url, factoryFactory, contextFactory=None,
 
 #from twisted.web.error import SchemeNotSupported
 from twisted.web._newclient import Response
-#from ._newclient import Request
-from ._newclient import HTTP11ClientProtocol
+#from twisted.web._newclient import Request, HTTP11ClientProtocol
 from twisted.web._newclient import ResponseDone, ResponseFailed
-from twisted.web._newclient import RequestNotSent, RequestTransmissionFailed
-from twisted.web._newclient import (
-    ResponseNeverReceived, PotentialDataLoss, _WrapperException)
+#from twisted.web._newclient import RequestNotSent, RequestTransmissionFailed
+#from twisted.web._newclient import (
+#    ResponseNeverReceived, PotentialDataLoss, _WrapperException)
 
 ''' {{{
 try:
@@ -311,7 +306,7 @@ class FileBodyProducer(object):
         the write activity.
         """
         self._task.resume()
-}}} '''
+
 
 
 class _HTTP11ClientFactory(protocol.Factory):
@@ -547,7 +542,7 @@ class HTTPConnectionPool(object):
         return defer.gatherResults(results).addCallback(lambda ign: None)
 
 
-''' {{{
+
 class _AgentBase(object):
     """
     Base class offering common facilities for L{Agent}-type classes.
@@ -1096,7 +1091,7 @@ class RedirectAgent(object):
             return self._handleRedirect(response, 'GET', uri, headers,
                                         redirectCount)
         return response
-}}} '''
+
 
 
 class _ReadBodyProtocol(protocol.Protocol):
@@ -1169,7 +1164,7 @@ def readBody(response):
     d = defer.Deferred()
     response.deliverBody(_ReadBodyProtocol(response.code, response.phrase, d))
     return d
-
+}}} '''
 
 
 __all__ = [

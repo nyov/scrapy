@@ -48,15 +48,11 @@ from twisted.web.http import _IdentityTransferDecoder, _ChunkedTransferDecoder
 from twisted.web._newclient import (
     BadHeaders, ExcessWrite, ParseError, BadResponseVersion, _WrapperException,
     RequestGenerationFailed, RequestTransmissionFailed, ConnectionAborted,
-    WrongBodyLength, ResponseDone, ResponseFailed, RequestNotSent, _callAppFunction,
-    ResponseNeverReceived, HTTPParser, HTTPClientParser,
+    WrongBodyLength, ResponseDone, ResponseFailed, RequestNotSent,
+    ResponseNeverReceived, HTTPParser, HTTPClientParser, Request,
     LengthEnforcingConsumer, makeStatefulDispatcher, Response, ChunkedEncoder,
-    TransportProxyProducer,
+    TransportProxyProducer, HTTP11ClientProtocol
 )
-# newer than 13.0.0
-#from twisted.web._newclient import (
-#    Request, HTTP11ClientProtocol
-#)
 
 # States HTTPParser can be in
 STATUS = 'STATUS'
@@ -551,7 +547,7 @@ class HTTPClientParser(HTTPParser):
                 exceptionClass = ResponseNeverReceived
             self._responseDeferred.errback(Failure(exceptionClass([reason])))
             del self._responseDeferred
-}}} '''
+
 
 
 class Request:
@@ -776,7 +772,7 @@ class Request:
         _callAppFunction(self.bodyProducer.stopProducing)
 
 
-''' {{{
+
 class LengthEnforcingConsumer:
     """
     An L{IConsumer} proxy which enforces an exact length requirement on the
@@ -1200,7 +1196,7 @@ class TransportProxyProducer:
         """
         if self._producer is not None:
             self._producer.pauseProducing()
-}}} '''
+
 
 
 class HTTP11ClientProtocol(Protocol):
@@ -1526,3 +1522,4 @@ class HTTP11ClientProtocol(Protocol):
         d = Deferred()
         self._abortDeferreds.append(d)
         return d
+}}} '''

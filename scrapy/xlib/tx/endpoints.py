@@ -36,20 +36,13 @@ from twisted.plugin import IPlugin, getPlugins
 #from twisted.internet import stdio
 
 from twisted.internet.endpoints import (
-    clientFromString, quoteStringArgument,
+    clientFromString, serverFromString, quoteStringArgument,
     TCP4ServerEndpoint, TCP6ServerEndpoint,
     TCP4ClientEndpoint, TCP6ClientEndpoint,
     UNIXServerEndpoint, UNIXClientEndpoint,
     SSL4ServerEndpoint, SSL4ClientEndpoint,
-    AdoptedStreamServerEndpoint,
-    _parseTCP, _parseUNIX, _parse,
+    AdoptedStreamServerEndpoint, connectProtocol,
 )
-# newer than 13.0.0
-#from twisted.internet.endpoints import (
-#    connectProtocol,
-#    serverFromString, #> using newer _parseSSL in _serverParsers
-#    _parseSSL,
-#)
 
 
 __all__ = ["TCP4ClientEndpoint", "SSL4ServerEndpoint"]
@@ -668,7 +661,7 @@ def _parseUNIX(factory, address, mode='666', backlog=50, lockfile=True):
         (address, factory),
         {'mode': int(mode, 8), 'backlog': int(backlog),
          'wantPID': bool(int(lockfile))})
-}}} '''
+
 
 
 def _parseSSL(factory, port, privateKey="server.pem", certKey=None,
@@ -725,7 +718,7 @@ def _parseSSL(factory, port, privateKey="server.pem", certKey=None,
             {'interface': interface, 'backlog': int(backlog)})
 
 
-''' {{{
+
 @implementer(IPlugin, IStreamServerEndpointStringParser)
 class _StandardIOParser(object):
     """
@@ -787,14 +780,14 @@ class _TCP6ServerParser(object):
         # Redirects to another function (self._parseServer), tricks zope.interface
         # into believing the interface is correctly implemented.
         return self._parseServer(reactor, *args, **kwargs)
-}}} '''
+
 
 
 _serverParsers = {"tcp": _parseTCP,
                   "unix": _parseUNIX,
                   "ssl": _parseSSL,
                   }
-''' {{{
+
 _OP, _STRING = range(2)
 
 def _tokenize(description):
@@ -862,7 +855,7 @@ def _parse(description):
             sofar = ()
     add(sofar)
     return args, kw
-}}} '''
+
 
 # Mappings from description "names" to endpoint constructors.
 _endpointServerFactories = {
@@ -870,13 +863,13 @@ _endpointServerFactories = {
     'SSL': SSL4ServerEndpoint,
     'UNIX': UNIXServerEndpoint,
     }
-''' {{{
+
 _endpointClientFactories = {
     'TCP': TCP4ClientEndpoint,
     'SSL': SSL4ClientEndpoint,
     'UNIX': UNIXClientEndpoint,
     }
-}}} '''
+
 
 _NO_DEFAULT = object()
 
@@ -1007,7 +1000,7 @@ def serverFromString(reactor, description):
     return _serverFromStringLegacy(reactor, description, _NO_DEFAULT)
 
 
-''' {{{
+
 def quoteStringArgument(argument):
     """
     Quote an argument to L{serverFromString} and L{clientFromString}.  Since
@@ -1262,7 +1255,7 @@ def clientFromString(reactor, description):
         raise ValueError("Unknown endpoint type: %r" % (aname,))
     kwargs = _clientParsers[name](*args, **kwargs)
     return _endpointClientFactories[name](reactor, **kwargs)
-}}} '''
+
 
 
 def connectProtocol(endpoint, protocol):
@@ -1283,4 +1276,4 @@ def connectProtocol(endpoint, protocol):
         def buildProtocol(self, addr):
             return protocol
     return endpoint.connect(OneShotFactory())
-
+}}} '''
