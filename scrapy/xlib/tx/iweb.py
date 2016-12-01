@@ -15,14 +15,11 @@ from zope.interface import Interface, Attribute
 #from twisted.internet.interfaces import IPushProducer
 
 from twisted.web.iweb import (
-    ICredentialFactory, IBodyProducer, IRenderable, ITemplateLoader, IResponse,
-    UNKNOWN_LENGTH,
+    IRequest, ICredentialFactory, IBodyProducer, IRenderable, ITemplateLoader,
+    IResponse, _IRequestEncoder, _IRequestEncoderFactory, UNKNOWN_LENGTH,
 )
-# newer than 12.1.0
-#from twisted.web.iweb import (
-#    IRequest, _IRequestEncoder, _IRequestEncoderFactory,
-#)
 
+''' {{{
 class IRequest(Interface):
     """
     An HTTP request.
@@ -328,7 +325,7 @@ class IRequest(Interface):
         """
 
 
-''' {{{
+
 class ICredentialFactory(Interface):
     """
     A credential factory defines a way to generate a particular kind of
@@ -536,7 +533,7 @@ class IResponse(Interface):
               were lost.  The C{reasons} attribute of the exception may provide
               more specific indications as to why.
         """
-}}} '''
+
 
 
 class _IRequestEncoder(Interface):
@@ -584,7 +581,7 @@ class _IRequestEncoderFactory(Interface):
         """
 
 
-''' {{{
+
 UNKNOWN_LENGTH = u"twisted.web.iweb.UNKNOWN_LENGTH"
 }}} '''
 __all__ = [

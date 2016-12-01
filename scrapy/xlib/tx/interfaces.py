@@ -26,10 +26,11 @@ from twisted.internet.interfaces import (
     IUDPTransport, IUNIXDatagramTransport, IUNIXDatagramConnectedTransport,
     IMulticastTransport, IStreamClientEndpoint, IStreamServerEndpoint,
     IStreamServerEndpointStringParser, IStreamClientEndpointStringParser,
+    IReactorUNIX, IReactorUNIXDatagram, IReactorSocket,
 )
-# newer than 12.1.0
+# newer than 12.3.0
 #from twisted.internet.interfaces import (
-#    IResolver, IReactorUNIX, IReactorUNIXDatagram, IReactorSocket,
+#    IResolver
 #)
 
 ''' {{{
@@ -722,7 +723,7 @@ class IReactorSSL(Interface):
 
         @param interface: the hostname to bind to, defaults to '' (all)
         """
-}}} '''
+
 
 
 class IReactorUNIX(Interface):
@@ -817,7 +818,7 @@ class IReactorUNIXDatagram(Interface):
         """
 
 
-''' {{{
+
 class IReactorWin32Events(Interface):
     """
     Win32 Event API methods
@@ -889,7 +890,7 @@ class IReactorMulticast(Interface):
         @see: L{twisted.internet.interfaces.IMulticastTransport}
         @see: U{http://twistedmatrix.com/documents/current/core/howto/udp.html}
         """
-}}} '''
+
 
 
 class IReactorSocket(Interface):
@@ -991,7 +992,7 @@ class IReactorSocket(Interface):
         """
 
 
-''' {{{
+
 class IReactorProcess(Interface):
 
     def spawnProcess(processProtocol, executable, args=(), env={}, path=None,

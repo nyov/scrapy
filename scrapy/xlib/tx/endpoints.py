@@ -37,18 +37,17 @@ from twisted.plugin import IPlugin, getPlugins
 
 from twisted.internet.endpoints import (
     clientFromString, quoteStringArgument,
-    TCP4ClientEndpoint,
+    TCP4ServerEndpoint, TCP6ServerEndpoint,
+    TCP4ClientEndpoint, TCP6ClientEndpoint,
     UNIXServerEndpoint, UNIXClientEndpoint,
     SSL4ServerEndpoint, SSL4ClientEndpoint,
     AdoptedStreamServerEndpoint,
     _parseTCP, _parseUNIX, _parse,
 )
-# newer than 12.1.0
+# newer than 12.3.0
 #from twisted.internet.endpoints import (
-#    TCP4ServerEndpoint, TCP6ServerEndpoint,
 #    connectProtocol,
 #    serverFromString, #> using newer _parseSSL in _serverParsers
-#    _TCPServerEndpoint,
 #    _parseSSL,
 #)
 
@@ -263,7 +262,7 @@ class _ProcessEndpointTransport(proxyForInterface(
         """
         for chunk in data:
             self._process.writeToChild(0, chunk)
-}}} '''
+
 
 @implementer(interfaces.IStreamServerEndpoint)
 class _TCPServerEndpoint(object):
@@ -344,7 +343,7 @@ class TCP6ServerEndpoint(_TCPServerEndpoint):
         _TCPServerEndpoint.__init__(self, reactor, port, backlog, interface)
 
 
-''' {{{
+
 @implementer(interfaces.IStreamClientEndpoint)
 class TCP4ClientEndpoint(object):
     """

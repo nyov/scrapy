@@ -37,12 +37,13 @@ from twisted.web.iweb import UNKNOWN_LENGTH, IBodyProducer, IResponse
 from twisted.web.http_headers import Headers
 
 from twisted.web.client import (
-    PartialDownloadError, _WebToNormalContextFactory, FileBodyProducer,
+    PartialDownloadError, FileBodyProducer,
     CookieAgent, GzipDecoder, ContentDecoderAgent, RedirectAgent,
+    Agent, ProxyAgent,
 )
-# newer than 12.1.0
+# newer than 12.3.0
 #from twisted.web.client import (
-#    HTTPConnectionPool, Agent, ProxyAgent, readBody,
+#    HTTPConnectionPool, readBody,
 #)
 
 ''' {{{
@@ -52,7 +53,7 @@ class PartialDownloadError(error.Error):
 
     @ivar response: All of the response body which was downloaded.
     """
-}}} '''
+
 
 class _URL(tuple):
     """
@@ -136,20 +137,22 @@ def _makeGetterFactory(url, factoryFactory, contextFactory=None,
     else:
         reactor.connectTCP(host, port, factory)
     return factory
-
+}}} '''
 
 # The code which follows is based on the new HTTP client implementation.  It
 # should be significantly better than anything above, though it is not yet
 # feature equivalent.
 
-from twisted.web.error import SchemeNotSupported
+#from twisted.web.error import SchemeNotSupported
 from twisted.web._newclient import Response
-from ._newclient import Request, HTTP11ClientProtocol
+#from ._newclient import Request
+from ._newclient import HTTP11ClientProtocol
 from twisted.web._newclient import ResponseDone, ResponseFailed
 from twisted.web._newclient import RequestNotSent, RequestTransmissionFailed
 from twisted.web._newclient import (
     ResponseNeverReceived, PotentialDataLoss, _WrapperException)
 
+''' {{{
 try:
     from twisted.internet.ssl import ClientContextFactory
 except ImportError:
@@ -170,7 +173,7 @@ else:
             return ClientContextFactory.getContext(self)
 
 
-''' {{{
+
 class _WebToNormalContextFactory(object):
     """
     Adapt a web context factory to a normal context factory.
@@ -544,7 +547,7 @@ class HTTPConnectionPool(object):
         return defer.gatherResults(results).addCallback(lambda ign: None)
 
 
-
+''' {{{
 class _AgentBase(object):
     """
     Base class offering common facilities for L{Agent}-type classes.
@@ -744,7 +747,7 @@ class ProxyAgent(_AgentBase):
                                          uri)
 
 
-''' {{{
+
 class _FakeUrllib2Request(object):
     """
     A fake C{urllib2.Request} object for C{cookielib} to work with.

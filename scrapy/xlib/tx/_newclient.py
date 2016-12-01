@@ -53,7 +53,7 @@ from twisted.web._newclient import (
     LengthEnforcingConsumer, makeStatefulDispatcher, Response, ChunkedEncoder,
     TransportProxyProducer,
 )
-# newer than 12.1.0
+# newer than 12.3.0
 #from twisted.web._newclient import (
 #    Request, HTTP11ClientProtocol
 #)
