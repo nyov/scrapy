@@ -13,23 +13,23 @@ from zope.interface import Interface, Attribute
 
 from twisted.internet.interfaces import (
     IAddress, IConnector, IResolverSimple, IReactorTCP, IReactorSSL,
-    IReactorUDP, IReactorMulticast, IReactorProcess,
+    IReactorWin32Events, IReactorUDP, IReactorMulticast, IReactorProcess,
     IReactorTime, IDelayedCall, IReactorThreads, IReactorCore,
     IReactorPluggableResolver, IReactorFDSet,
     IListeningPort, ILoggingContext, IFileDescriptor, IReadDescriptor,
     IWriteDescriptor, IReadWriteDescriptor, IHalfCloseableDescriptor,
     ISystemHandle, IConsumer, IProducer, IPushProducer, IPullProducer,
     IProtocol, IProcessProtocol, IHalfCloseableProtocol,
-    IProtocolFactory, ITransport,
+    IProtocolFactory, ITransport, ITCPTransport,
     ITLSTransport, ISSLTransport, IProcessTransport, IServiceCollection,
     IUDPTransport, IUNIXDatagramTransport, IUNIXDatagramConnectedTransport,
     IMulticastTransport, IStreamClientEndpoint, IStreamServerEndpoint,
+    IStreamServerEndpointStringParser, IStreamClientEndpointStringParser,
 )
-# newer than 10.1.0
+# newer than 11.1.0
 #from twisted.internet.interfaces import (
-#    IResolver, IReactorUNIX, IReactorUNIXDatagram, IReactorWin32Events, IReactorSocket,
-#    IReactorDaemonize, IFileDescriptorReceiver, ITCPTransport, IUNIXTransport,
-#    IStreamServerEndpointStringParser, IStreamClientEndpointStringParser,
+#    IResolver, IReactorUNIX, IReactorUNIXDatagram, IReactorSocket,
+#    IReactorDaemonize, IFileDescriptorReceiver, IUNIXTransport,
 #)
 
 ''' {{{
@@ -817,7 +817,7 @@ class IReactorUNIXDatagram(Interface):
         """
 
 
-
+''' {{{
 class IReactorWin32Events(Interface):
     """
     Win32 Event API methods
@@ -850,7 +850,7 @@ class IReactorWin32Events(Interface):
         """
 
 
-''' {{{
+
 class IReactorUDP(Interface):
     """
     UDP socket methods.
@@ -1995,7 +1995,7 @@ class ITransport(Interface):
 
         @return: An L{IAddress} provider.
         """
-}}} '''
+
 
 class ITCPTransport(ITransport):
     """
@@ -2062,7 +2062,7 @@ class ITCPTransport(ITransport):
         """
         Returns L{IPv4Address} or L{IPv6Address}.
         """
-
+}}} '''
 
 
 class IUNIXTransport(ITransport):
@@ -2384,7 +2384,7 @@ class IStreamServerEndpoint(Interface):
         @return: A L{Deferred} that results in an L{IListeningPort} or an
             L{CannotListenError}
         """
-}}} '''
+
 
 
 class IStreamServerEndpointStringParser(Interface):
@@ -2461,3 +2461,4 @@ class IStreamClientEndpointStringParser(Interface):
         @return: a client endpoint
         @rtype: L{IStreamClientEndpoint}
         """
+}}} '''

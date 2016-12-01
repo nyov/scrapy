@@ -32,20 +32,19 @@ from twisted.internet.interfaces import IProtocol
 from twisted.python import failure
 from twisted.python.components import proxyForInterface
 from twisted.web import error
-from twisted.web.iweb import UNKNOWN_LENGTH, IBodyProducer
+from twisted.web.iweb import UNKNOWN_LENGTH, IBodyProducer, IResponse
 from twisted.web.http_headers import Headers
 
 from twisted.web.client import (
-    PartialDownloadError,
+    PartialDownloadError, _WebToNormalContextFactory, FileBodyProducer,
+    CookieAgent, GzipDecoder, ContentDecoderAgent, RedirectAgent,
 )
-# newer than 10.1.0
+# newer than 11.1.0
 #from twisted.web.client import (
-#    CookieAgent, GzipDecoder, ContentDecoderAgent, RedirectAgent, FileBodyProducer,
-#    HTTPConnectionPool, Agent, ProxyAgent,
+#    HTTPConnectionPool, Agent, ProxyAgent, readBody,
 #)
 
 from .endpoints import TCP4ClientEndpoint, SSL4ClientEndpoint
-from .iweb import IResponse
 
 ''' {{{
 class PartialDownloadError(error.Error):
@@ -147,8 +146,7 @@ def _makeGetterFactory(url, factoryFactory, contextFactory=None,
 from twisted.web.error import SchemeNotSupported
 from twisted.web._newclient import Response
 from ._newclient import Request, HTTP11ClientProtocol
-from twisted.web._newclient import ResponseDone
-from ._newclient import ResponseFailed
+from twisted.web._newclient import ResponseDone, ResponseFailed
 from twisted.web._newclient import RequestNotSent, RequestTransmissionFailed
 from twisted.web._newclient import (
     PotentialDataLoss, _WrapperException)
@@ -175,7 +173,7 @@ else:
             return ClientContextFactory.getContext(self)
 
 
-
+''' {{{
 class _WebToNormalContextFactory(object):
     """
     Adapt a web context factory to a normal context factory.
@@ -313,7 +311,7 @@ class FileBodyProducer(object):
         the write activity.
         """
         self._task.resume()
-
+}}} '''
 
 
 class _HTTP11ClientFactory(protocol.Factory):
@@ -749,7 +747,7 @@ class ProxyAgent(_AgentBase):
                                          uri)
 
 
-
+''' {{{
 class _FakeUrllib2Request(object):
     """
     A fake C{urllib2.Request} object for C{cookielib} to work with.
@@ -1098,7 +1096,7 @@ class RedirectAgent(object):
             return self._handleRedirect(response, 'GET', uri, headers,
                                         redirectCount)
         return response
-
+}}} '''
 
 
 class _ReadBodyProtocol(protocol.Protocol):

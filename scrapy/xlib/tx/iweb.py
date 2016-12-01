@@ -15,12 +15,12 @@ from zope.interface import Interface, Attribute
 #from twisted.internet.interfaces import IPushProducer
 
 from twisted.web.iweb import (
-    ICredentialFactory, IBodyProducer,
+    ICredentialFactory, IBodyProducer, IRenderable, ITemplateLoader, IResponse,
     UNKNOWN_LENGTH,
 )
-# newer than 10.1.0
+# newer than 11.1.0
 #from twisted.web.iweb import (
-#    IRequest, IRenderable, ITemplateLoader, IResponse, _IRequestEncoder, _IRequestEncoderFactory,
+#    IRequest, _IRequestEncoder, _IRequestEncoderFactory,
 #)
 
 class IRequest(Interface):
@@ -432,7 +432,7 @@ class IBodyProducer(IPushProducer):
         L{Deferred<twisted.internet.defer.Deferred>} returned by
         C{startProducing} is never fired.
         """
-}}} '''
+
 
 
 class IRenderable(Interface):
@@ -536,7 +536,7 @@ class IResponse(Interface):
               were lost.  The C{reasons} attribute of the exception may provide
               more specific indications as to why.
         """
-
+}}} '''
 
 
 class _IRequestEncoder(Interface):

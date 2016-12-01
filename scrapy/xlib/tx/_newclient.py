@@ -38,9 +38,9 @@ from twisted.internet.error import ConnectionDone
 from twisted.internet.defer import Deferred, succeed, fail, maybeDeferred
 from twisted.internet.defer import CancelledError
 from twisted.internet.protocol import Protocol
-from twisted.protocols.basic import LineReceiver
-from twisted.web.iweb import UNKNOWN_LENGTH
-from twisted.web.http_headers import Headers
+#from twisted.protocols.basic import LineReceiver
+from twisted.web.iweb import UNKNOWN_LENGTH, IResponse
+#from twisted.web.http_headers import Headers
 from twisted.web.http import NO_CONTENT, NOT_MODIFIED
 from twisted.web.http import _DataLoss, PotentialDataLoss
 from twisted.web.http import _IdentityTransferDecoder, _ChunkedTransferDecoder
@@ -48,16 +48,15 @@ from twisted.web.http import _IdentityTransferDecoder, _ChunkedTransferDecoder
 from twisted.web._newclient import (
     BadHeaders, ExcessWrite, ParseError, BadResponseVersion, _WrapperException,
     RequestGenerationFailed, RequestTransmissionFailed, ConnectionAborted,
-    WrongBodyLength, ResponseDone, RequestNotSent,
+    WrongBodyLength, ResponseDone, ResponseFailed, RequestNotSent, _callAppFunction,
+    HTTPParser,
     LengthEnforcingConsumer, makeStatefulDispatcher, Response, ChunkedEncoder,
     TransportProxyProducer,
 )
-# newer than 10.1.0
+# newer than 11.1.0
 #from twisted.web._newclient import (
-#    ResponseFailed, ResponseNeverReceived, HTTPParser, HTTPClientParser,
-#    Request, HTTP11ClientProtocol,
+#    ResponseNeverReceived, HTTPClientParser, Request, HTTP11ClientProtocol
 #)
-from .iweb import IResponse
 
 # States HTTPParser can be in
 STATUS = 'STATUS'
@@ -155,7 +154,7 @@ class ResponseDone(Exception):
     protocol passed to L{Response.deliverBody} and indicates that the entire
     response has been delivered.
     """
-}}} '''
+
 
 
 class ResponseFailed(_WrapperException):
@@ -173,7 +172,7 @@ class ResponseFailed(_WrapperException):
     def __init__(self, reasons, response=None):
         _WrapperException.__init__(self, reasons)
         self.response = response
-
+}}} '''
 
 
 class ResponseNeverReceived(ResponseFailed):
@@ -191,7 +190,7 @@ class RequestNotSent(Exception):
     to send a request using a protocol which is no longer connected to a
     server.
     """
-}}} '''
+
 
 
 def _callAppFunction(function):
@@ -351,7 +350,7 @@ class HTTPParser(LineReceiver):
         Override this to change to the C{BODY} or C{DONE} state.
         """
         self.switchToBodyMode(None)
-
+}}} '''
 
 
 class HTTPClientParser(HTTPParser):

@@ -35,17 +35,19 @@ from twisted.plugin import IPlugin, getPlugins
 #from twisted.internet import stdio
 
 from twisted.internet.endpoints import (
+    quoteStringArgument,
+    UNIXServerEndpoint,
     SSL4ServerEndpoint,
+    _parseTCP, _parseUNIX, _parse,
+    _loadCAsFromDir,
 )
-# newer than 10.1.0
+# newer than 11.1.0
 #from twisted.internet.endpoints import (
 #    TCP4ServerEndpoint, TCP6ServerEndpoint, TCP4ClientEndpoint, SSL4ClientEndpoint,
-#    UNIXServerEndpoint, UNIXClientEndpoint, AdoptedStreamServerEndpoint, connectProtocol,
-#    quoteStringArgument,
-#    serverFromString, #> using newer _parseSSL, _tokenize in _serverParsers
+#    UNIXClientEndpoint, AdoptedStreamServerEndpoint, connectProtocol,
+#    serverFromString, #> using newer _parseSSL in _serverParsers
 #    clientFromString, #> using newer _clientParsers
 #    _WrappingProtocol, _WrappingFactory, _TCPServerEndpoint,
-#    _parseTCP, _parseUNIX, _loadCAsFromDir,
 #    _parseSSL, _tokenize,
 #    _parseClientTCP, _parseClientSSL, _parseClientUNIX,
 #)
@@ -486,7 +488,7 @@ class SSL4ClientEndpoint(object):
             return defer.fail()
 
 
-
+''' {{{
 @implementer(interfaces.IStreamServerEndpoint)
 class UNIXServerEndpoint(object):
     """
@@ -518,7 +520,7 @@ class UNIXServerEndpoint(object):
                              backlog=self._backlog,
                              mode=self._mode,
                              wantPID=self._wantPID)
-
+}}} '''
 
 
 @implementer(interfaces.IStreamClientEndpoint)
@@ -611,7 +613,7 @@ class AdoptedStreamServerEndpoint(object):
         return defer.succeed(port)
 
 
-
+''' {{{
 def _parseTCP(factory, port, interface="", backlog=50):
     """
     Internal parser function for L{_parseServer} to convert the string
@@ -668,7 +670,7 @@ def _parseUNIX(factory, address, mode='666', backlog=50, lockfile=True):
         (address, factory),
         {'mode': int(mode, 8), 'backlog': int(backlog),
          'wantPID': bool(int(lockfile))})
-
+}}} '''
 
 
 def _parseSSL(factory, port, privateKey="server.pem", certKey=None,
@@ -794,7 +796,7 @@ _serverParsers = {"tcp": _parseTCP,
                   "unix": _parseUNIX,
                   "ssl": _parseSSL,
                   }
-
+''' {{{
 _OP, _STRING = range(2)
 
 def _tokenize(description):
@@ -862,7 +864,7 @@ def _parse(description):
             sofar = ()
     add(sofar)
     return args, kw
-
+}}} '''
 
 # Mappings from description "names" to endpoint constructors.
 _endpointServerFactories = {
@@ -1007,7 +1009,7 @@ def serverFromString(reactor, description):
     return _serverFromStringLegacy(reactor, description, _NO_DEFAULT)
 
 
-
+''' {{{
 def quoteStringArgument(argument):
     """
     Quote an argument to L{serverFromString} and L{clientFromString}.  Since
@@ -1038,7 +1040,7 @@ def quoteStringArgument(argument):
     @rtype: C{str}
     """
     return argument.replace('\\', '\\\\').replace(':', '\\:')
-
+}}} '''
 
 
 def _parseClientTCP(*args, **kwargs):
@@ -1074,7 +1076,7 @@ def _parseClientTCP(*args, **kwargs):
     return kwargs
 
 
-
+''' {{{
 def _loadCAsFromDir(directoryPath):
     """
     Load certificate-authority certificate objects in a given directory.
@@ -1103,7 +1105,7 @@ def _loadCAsFromDir(directoryPath):
         else:
             caCerts[theCert.digest()] = theCert.original
     return caCerts.values()
-
+}}} '''
 
 
 def _parseClientSSL(*args, **kwargs):
