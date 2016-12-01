@@ -39,7 +39,7 @@ from twisted.web.client import (
     PartialDownloadError, _WebToNormalContextFactory, FileBodyProducer,
     CookieAgent, GzipDecoder, ContentDecoderAgent, RedirectAgent,
 )
-# newer than 11.1.0
+# newer than 12.0.0
 #from twisted.web.client import (
 #    HTTPConnectionPool, Agent, ProxyAgent, readBody,
 #)

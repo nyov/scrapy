@@ -41,7 +41,7 @@ from twisted.internet.endpoints import (
     _parseTCP, _parseUNIX, _parse,
     _loadCAsFromDir,
 )
-# newer than 11.1.0
+# newer than 12.0.0
 #from twisted.internet.endpoints import (
 #    TCP4ServerEndpoint, TCP6ServerEndpoint, TCP4ClientEndpoint, SSL4ClientEndpoint,
 #    UNIXClientEndpoint, AdoptedStreamServerEndpoint, connectProtocol,

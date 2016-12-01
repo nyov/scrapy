@@ -26,7 +26,7 @@ from twisted.internet.interfaces import (
     IMulticastTransport, IStreamClientEndpoint, IStreamServerEndpoint,
     IStreamServerEndpointStringParser, IStreamClientEndpointStringParser,
 )
-# newer than 11.1.0
+# newer than 12.0.0
 #from twisted.internet.interfaces import (
 #    IResolver, IReactorUNIX, IReactorUNIXDatagram, IReactorSocket,
 #    IReactorDaemonize, IFileDescriptorReceiver, IUNIXTransport,
