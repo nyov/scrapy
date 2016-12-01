@@ -26,12 +26,8 @@ from twisted.internet.interfaces import (
     IUDPTransport, IUNIXDatagramTransport, IUNIXDatagramConnectedTransport,
     IMulticastTransport, IStreamClientEndpoint, IStreamServerEndpoint,
     IStreamServerEndpointStringParser, IStreamClientEndpointStringParser,
-    IReactorUNIX, IReactorUNIXDatagram, IReactorSocket,
+    IReactorUNIX, IReactorUNIXDatagram, IReactorSocket, IResolver
 )
-# newer than 12.3.0
-#from twisted.internet.interfaces import (
-#    IResolver
-#)
 
 ''' {{{
 class IAddress(Interface):
@@ -96,7 +92,7 @@ class IResolverSimple(Interface):
         @raise twisted.internet.defer.TimeoutError: Raised (asynchronously)
         if the name cannot be resolved within the specified timeout period.
         """
-}}} '''
+
 
 
 class IResolver(IResolverSimple):
@@ -636,7 +632,7 @@ class IResolver(IResolverSimple):
         """
 
 
-''' {{{
+
 class IReactorTCP(Interface):
 
     def listenTCP(port, factory, backlog=50, interface=''):

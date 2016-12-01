@@ -41,7 +41,7 @@ from twisted.web.client import (
     CookieAgent, GzipDecoder, ContentDecoderAgent, RedirectAgent,
     Agent, ProxyAgent,
 )
-# newer than 12.3.0
+# newer than 13.0.0
 #from twisted.web.client import (
 #    HTTPConnectionPool, readBody,
 #)

@@ -44,7 +44,7 @@ from twisted.internet.endpoints import (
     AdoptedStreamServerEndpoint,
     _parseTCP, _parseUNIX, _parse,
 )
-# newer than 12.3.0
+# newer than 13.0.0
 #from twisted.internet.endpoints import (
 #    connectProtocol,
 #    serverFromString, #> using newer _parseSSL in _serverParsers

@@ -41,7 +41,7 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     install_requires=[
-        'Twisted>=12.3.0',
+        'Twisted>=13.0.0',
         'w3lib>=1.15.0',
         'queuelib',
         'lxml',
