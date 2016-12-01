@@ -38,23 +38,10 @@ from twisted.web.http_headers import Headers
 from twisted.web.client import (
     PartialDownloadError,
 )
-# newer than 10.0.0
-#from twisted.web.client import (
-#    CookieAgent, GzipDecoder, ContentDecoderAgent, RedirectAgent, FileBodyProducer,
-#    HTTPConnectionPool, Agent, ProxyAgent,
-#)
 
 from .endpoints import TCP4ClientEndpoint, SSL4ClientEndpoint
 from .iweb import IResponse
 
-''' {{{
-class PartialDownloadError(error.Error):
-    """
-    Page was only partially downloaded, we got disconnected in middle.
-
-    @ivar response: All of the response body which was downloaded.
-    """
-}}} '''
 
 class _URL(tuple):
     """

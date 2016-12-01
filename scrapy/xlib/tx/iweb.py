@@ -18,10 +18,7 @@ from twisted.web.iweb import (
     ICredentialFactory, IBodyProducer,
     UNKNOWN_LENGTH,
 )
-# newer than 10.0.0
-#from twisted.web.iweb import (
-#    IRequest, IRenderable, ITemplateLoader, IResponse, _IRequestEncoder, _IRequestEncoderFactory,
-#)
+
 
 class IRequest(Interface):
     """
@@ -328,111 +325,6 @@ class IRequest(Interface):
         """
 
 
-''' {{{
-class ICredentialFactory(Interface):
-    """
-    A credential factory defines a way to generate a particular kind of
-    authentication challenge and a way to interpret the responses to these
-    challenges.  It creates
-    L{ICredentials<twisted.cred.credentials.ICredentials>} providers from
-    responses.  These objects will be used with L{twisted.cred} to authenticate
-    an authorize requests.
-    """
-    scheme = Attribute(
-        "A C{str} giving the name of the authentication scheme with which "
-        "this factory is associated.  For example, C{'basic'} or C{'digest'}.")
-
-
-    def getChallenge(request):
-        """
-        Generate a new challenge to be sent to a client.
-
-        @type peer: L{twisted.web.http.Request}
-        @param peer: The request the response to which this challenge will be
-            included.
-
-        @rtype: C{dict}
-        @return: A mapping from C{str} challenge fields to associated C{str}
-            values.
-        """
-
-
-    def decode(response, request):
-        """
-        Create a credentials object from the given response.
-
-        @type response: C{str}
-        @param response: scheme specific response string
-
-        @type request: L{twisted.web.http.Request}
-        @param request: The request being processed (from which the response
-            was taken).
-
-        @raise twisted.cred.error.LoginFailed: If the response is invalid.
-
-        @rtype: L{twisted.cred.credentials.ICredentials} provider
-        @return: The credentials represented by the given response.
-        """
-
-
-
-class IBodyProducer(IPushProducer):
-    """
-    Objects which provide L{IBodyProducer} write bytes to an object which
-    provides L{IConsumer<twisted.internet.interfaces.IConsumer>} by calling its
-    C{write} method repeatedly.
-
-    L{IBodyProducer} providers may start producing as soon as they have an
-    L{IConsumer<twisted.internet.interfaces.IConsumer>} provider.  That is, they
-    should not wait for a C{resumeProducing} call to begin writing data.
-
-    L{IConsumer.unregisterProducer<twisted.internet.interfaces.IConsumer.unregisterProducer>}
-    must not be called.  Instead, the
-    L{Deferred<twisted.internet.defer.Deferred>} returned from C{startProducing}
-    must be fired when all bytes have been written.
-
-    L{IConsumer.write<twisted.internet.interfaces.IConsumer.write>} may
-    synchronously invoke any of C{pauseProducing}, C{resumeProducing}, or
-    C{stopProducing}.  These methods must be implemented with this in mind.
-
-    @since: 9.0
-    """
-
-    # Despite the restrictions above and the additional requirements of
-    # stopProducing documented below, this interface still needs to be an
-    # IPushProducer subclass.  Providers of it will be passed to IConsumer
-    # providers which only know about IPushProducer and IPullProducer, not
-    # about this interface.  This interface needs to remain close enough to one
-    # of those interfaces for consumers to work with it.
-
-    length = Attribute(
-        """
-        C{length} is a C{int} indicating how many bytes in total this
-        L{IBodyProducer} will write to the consumer or L{UNKNOWN_LENGTH}
-        if this is not known in advance.
-        """)
-
-    def startProducing(consumer):
-        """
-        Start producing to the given
-        L{IConsumer<twisted.internet.interfaces.IConsumer>} provider.
-
-        @return: A L{Deferred<twisted.internet.defer.Deferred>} which fires with
-            C{None} when all bytes have been produced or with a
-            L{Failure<twisted.python.failure.Failure>} if there is any problem
-            before all bytes have been produced.
-        """
-
-
-    def stopProducing():
-        """
-        In addition to the standard behavior of
-        L{IProducer.stopProducing<twisted.internet.interfaces.IProducer.stopProducing>}
-        (stop producing data), make sure the
-        L{Deferred<twisted.internet.defer.Deferred>} returned by
-        C{startProducing} is never fired.
-        """
-}}} '''
 
 
 class IRenderable(Interface):
@@ -584,9 +476,6 @@ class _IRequestEncoderFactory(Interface):
         """
 
 
-''' {{{
-UNKNOWN_LENGTH = u"twisted.web.iweb.UNKNOWN_LENGTH"
-}}} '''
 __all__ = [
     "ICredentialFactory", "IRequest",
     "IBodyProducer", "IRenderable", "IResponse", "_IRequestEncoder",
