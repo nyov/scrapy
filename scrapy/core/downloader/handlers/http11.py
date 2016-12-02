@@ -13,7 +13,9 @@ from twisted.web.http_headers import Headers as TxHeaders
 from twisted.web.iweb import IBodyProducer, UNKNOWN_LENGTH
 from twisted.internet.error import TimeoutError
 from twisted.web.http import PotentialDataLoss
-from scrapy.xlib.tx import Agent, ProxyAgent, ResponseDone, \
+from twisted.web.client import ResponseDone
+
+from scrapy.xlib.tx import Agent, ProxyAgent, \
     HTTPConnectionPool, TCP4ClientEndpoint
 
 from scrapy.http import Headers
