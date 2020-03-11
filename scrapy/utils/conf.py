@@ -80,17 +80,17 @@ def init_env(project='default', set_syspath=True):
     be able to locate the project module.
     Returns the settings module path found in the config file.
     """
-    settings_module = None
+    settings_module_path = None
     cfg = get_config()
     if cfg.has_option('settings', project):
-        settings_module = cfg.get('settings', project)
+        settings_module_path = cfg.get('settings', project)
     if set_syspath:
         closest = closest_scrapy_cfg()
         if closest:
             projdir = os.path.dirname(closest)
             if projdir not in sys.path:
                 sys.path.append(projdir)
-    return settings_module
+    return settings_module_path
 
 
 def get_config(use_closest=True):
